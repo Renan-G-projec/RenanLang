@@ -10,3 +10,4 @@ This is the table of opcodes decided to make the calculator work.
 | SUB               | 05 00  |
 | JMP               | 06 00  |
 | JMP_IF_ZERO       | 07 00  |
+| HALT              | 64 00  |

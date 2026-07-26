@@ -10,6 +10,7 @@ enum Opcode {
     SUB,
     JMP,
     JMP_IF_ZERO,
+    HALT = 64,
     INVALID_OPCODE
 };
 
@@ -21,6 +22,7 @@ Opcode processOpcode(const std::string& verb) {
     if (verb == "SUB") return SUB;
     if (verb == "JMP") return JMP;
     if (verb == "JMP_IF_ZERO") return JMP_IF_ZERO;
+    if (verb == "HALT") return HALT;
     return INVALID_OPCODE;
 }
 
