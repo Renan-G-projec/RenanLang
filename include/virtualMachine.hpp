@@ -7,16 +7,18 @@
 
 class VirtualMachine {
 public:
-    void loadBytecode(std::uint8_t* const bytecode);
+    void loadBytecode(std::int8_t const* bytecode);
     void init();
 
 private:
-    std::uint8_t* const mCode;
+    std::int8_t const* mCode;
     std::uint32_t mCurrentAddress;
     std::stack<std::int8_t> mStack;
+
+    std::int8_t mCurrentInstruction[2];
+    bool mRunning;
     
     void _fetch();
-    void _decode();
     void _execute();
 };
 
