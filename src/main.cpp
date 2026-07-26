@@ -1,6 +1,11 @@
 // Ad Maiorem Dei Gloriam!
-#include <iostream>
+#include "main.hpp"
 
-int main() {
-    std::cout << "Hello, world!\n";
+inline void print_usage() {
+    std::cout << "Usage: RenanLang <bytecode-file>\n";
+    return;
+}
+
+int main(int argc, const char** argv) {
+    if (argc < 2) print_usage();
 }

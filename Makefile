@@ -10,7 +10,7 @@ INCLUDE := include
 TARGET := build/RenanLang
 
 MODE := debug
-FLAGS := -O0 -g
+FLAGS := -O0 -g -Wall -Wextra -Wpedantic -Werror
 
 # Colors
 NO_COLOR := \033[0m
