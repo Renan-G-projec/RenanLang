@@ -8,4 +8,7 @@ inline void print_usage() {
 
 int main(int argc, const char** argv) {
     if (argc < 2) print_usage();
+    RenanLang renanLang;
+
+    renanLang.loadFile(argv[1]);
 }

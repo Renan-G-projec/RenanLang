@@ -2,6 +2,7 @@
 #ifndef FILELOADER_HPP
 #define FILELOADER_HPP
 
+#include <string>
 #include <sstream>
 #include <fstream>
 

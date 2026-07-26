@@ -2,6 +2,8 @@
 #ifndef RENANLANG_HPP
 #define RENANLANG_HPP
 
+#include "fileLoader.hpp"
+
 class RenanLang {
 public:
     RenanLang() = default;
@@ -12,10 +14,10 @@ public:
 
 private:
     // VirtualMachine mVM;
-    // FileLoader mFileloader;
+    FileLoader mFileloader;
     // Compiler mCompiler
     
-    // std::stringstream mLoadedCode;
+    std::stringstream mLoadedCode;
     // uint8_buffer mCompiledCode
 };
 

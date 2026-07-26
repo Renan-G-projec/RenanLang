@@ -2,7 +2,7 @@
 #include "renanLang.hpp"
 
 void RenanLang::loadFile(const char *fileName) {
-    // mFileLoader.load(fileName, mLoadedCode);
+    mFileloader.load(fileName, mLoadedCode);
     // mCompiler.compile(mCompiledCode, mLoadedCode);
     return;
 }
