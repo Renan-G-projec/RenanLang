@@ -19,7 +19,7 @@ private:
     Compiler mCompiler;
     
     std::stringstream mLoadedCode;
-    bytecode_t mCompiledCode[2];
+    std::int8_t mCompiledCode[100];
 };
 
 #endif
