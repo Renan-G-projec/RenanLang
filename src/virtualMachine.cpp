@@ -1,5 +1,6 @@
 // Ad Maiorem Dei Gloriam!
 #include "virtualMachine.hpp"
+#include "opcodeTable.hpp"
 
 void VirtualMachine::loadBytecode(std::int8_t const* bytecode) {
     this->mCode = bytecode;
@@ -19,5 +20,10 @@ void VirtualMachine::_fetch() {
 }
 
 void VirtualMachine::_execute() {
-    // To implement
+    switch (mCurrentInstruction[0]) {
+        case Opcode::PUSH: {
+            mStack.push(mCurrentInstruction[1]);
+            break;
+        }
+    }
 }
