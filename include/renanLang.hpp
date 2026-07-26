@@ -4,6 +4,7 @@
 
 #include "fileLoader.hpp"
 #include "compiler.hpp"
+#include "virtualMachine.hpp"
 
 class RenanLang {
 public:
@@ -14,7 +15,7 @@ public:
     void init();
 
 private:
-    // VirtualMachine mVM;
+    VirtualMachine mVM;
     FileLoader mFileloader;
     Compiler mCompiler;
     

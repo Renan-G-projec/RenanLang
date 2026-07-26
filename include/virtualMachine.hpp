@@ -4,15 +4,16 @@
 
 #include <cstdint>
 #include <stack>
+#include <iostream>
 
 class VirtualMachine {
 public:
-    void loadBytecode(std::int8_t const* bytecode);
+    void loadBytecode(std::int8_t* bytecode);
     void init();
 
 private:
-    std::int8_t const* mCode;
-    std::uint32_t mCurrentAddress;
+    std::int8_t* mCode;
+    std::uint32_t mCurrentAddress = 0;
     std::stack<std::int8_t> mStack;
 
     std::int8_t mCurrentInstruction[2];

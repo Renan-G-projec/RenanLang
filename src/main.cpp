@@ -11,4 +11,5 @@ int main(int argc, const char** argv) {
     RenanLang renanLang;
 
     renanLang.loadFile(argv[1]);
+    renanLang.init();
 }
