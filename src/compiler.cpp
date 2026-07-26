@@ -2,17 +2,7 @@
 #include "compiler.hpp"
 #include <iostream>
 
-enum Opcode {
-    PUSH = 1,
-    ADD,
-    PRINT,
-    PRINT_ASCII,
-    SUB,
-    JMP,
-    JMP_IF_ZERO,
-    HALT = 64,
-    INVALID_OPCODE
-};
+#include "opcodeTable.hpp"
 
 Opcode processOpcode(const std::string& verb) {
     if (verb == "PUSH") return PUSH;
