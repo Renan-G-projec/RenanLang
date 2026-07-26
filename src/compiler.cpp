@@ -54,7 +54,7 @@ void Compiler::compileLine(const std::string& code, std::int8_t store[]) {
 
     // If the opcode needs an argument, it is processed through this switch
     switch (opcode) {
-        case Opcode::JMP: {
+        case Opcode::PUSH: {
             lineStream >> arg;
             store[1] = static_cast<char>(arg);
             break;
