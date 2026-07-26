@@ -3,7 +3,7 @@
 
 void RenanLang::loadFile(const char *fileName) {
     mFileloader.load(fileName, mLoadedCode);
-    // mCompiler.compile(mCompiledCode, mLoadedCode);
+    mCompiler.compile(mLoadedCode, mCompiledCode);
     return;
 }
 

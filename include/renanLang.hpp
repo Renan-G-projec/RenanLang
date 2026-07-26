@@ -3,6 +3,7 @@
 #define RENANLANG_HPP
 
 #include "fileLoader.hpp"
+#include "compiler.hpp"
 
 class RenanLang {
 public:
@@ -15,10 +16,10 @@ public:
 private:
     // VirtualMachine mVM;
     FileLoader mFileloader;
-    // Compiler mCompiler
+    Compiler mCompiler;
     
     std::stringstream mLoadedCode;
-    // uint8_buffer mCompiledCode
+    bytecode_t mCompiledCode[2];
 };
 
 #endif
