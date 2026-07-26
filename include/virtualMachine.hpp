@@ -6,6 +6,13 @@
 #include <stack>
 #include <iostream>
 
+struct Error {
+    Error(const std::string message, std::uint32_t address);
+
+    const std::string message;
+    std::uint32_t address;
+};
+
 class VirtualMachine {
 public:
     void loadBytecode(std::int8_t* bytecode);
@@ -19,6 +26,7 @@ private:
     std::int8_t mCurrentInstruction[2];
     bool mRunning;
     
+    std::int8_t popStack();
     void _fetch();
     void _execute();
 };

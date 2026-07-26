@@ -2,6 +2,8 @@
 #include "virtualMachine.hpp"
 #include "opcodeTable.hpp"
 
+Error::Error(const std::string message, std::uint32_t address) : message{message}, address{address} {};
+
 void VirtualMachine::loadBytecode(std::int8_t* bytecode) {
     this->mCode = bytecode;
 }
@@ -22,29 +24,38 @@ void VirtualMachine::_fetch() {
 }
 
 void VirtualMachine::_execute() {
-    switch (mCurrentInstruction[0]) {
-        case Opcode::PUSH: {
-            mStack.push(mCurrentInstruction[1]);
-            break;
+    try {
+        switch (mCurrentInstruction[0]) {
+            case Opcode::PUSH: {
+                mStack.push(mCurrentInstruction[1]);
+                break;
+            }
+            case Opcode::ADD: {
+                int arg1 = popStack();
+                int arg2 = popStack();
+                int sum = arg1 + arg2;
+                mStack.push(sum);
+                break;
+            }
+            case Opcode::PRINT: {
+                int numberToPrint = popStack();
+                std::cout << numberToPrint << '\n';
+                break;
+            }
+            case Opcode::HALT: {
+                mRunning = false;
+                break;
+            }
         }
-        case Opcode::ADD: {
-            int arg1 = mStack.top();
-            mStack.pop();
-            int arg2 = mStack.top();
-            mStack.pop();
-            int sum = arg1 + arg2;
-            mStack.push(sum);
-            break;
-        }
-        case Opcode::PRINT: {
-            int numberToPrint = mStack.top();
-            mStack.pop();
-            std::cout << numberToPrint << '\n';
-            break;
-        }
-        case Opcode::HALT: {
-            mRunning = false;
-            break;
-        }
+    } catch (Error error) {
+        std::cout << "ERROR: at address " << error.address << '\n' << error.message << '\n';
+        mRunning = false;
     }
+}
+
+std::int8_t VirtualMachine::popStack() {
+    if (mStack.size() < 1) throw Error("Empty stack cannot be popped.", mCurrentAddress);
+    std::int8_t stackTop = mStack.top();
+    mStack.pop();
+    return stackTop;
 }
