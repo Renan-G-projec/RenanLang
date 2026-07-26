@@ -24,7 +24,7 @@ Opcode processOpcode(const std::string& verb) {
     return INVALID_OPCODE;
 }
 
-void Compiler::compile(std::stringstream &code, int8_t bytecodeRecipient[]) {
+void Compiler::compile(std::stringstream &code, int8_t* bytecodeRecipient) {
     std::uint32_t currentByte = 0;
     std::string currentLineCode;
 
@@ -41,7 +41,7 @@ void Compiler::compile(std::stringstream &code, int8_t bytecodeRecipient[]) {
 void Compiler::compileLine(const std::string& code, std::int8_t store[]) {
     std::stringstream lineStream{code};
     std::string verb;
-    int arg = 0;
+    std::string arg;
 
     lineStream >> verb;
     Opcode opcode = processOpcode(verb);
@@ -56,12 +56,14 @@ void Compiler::compileLine(const std::string& code, std::int8_t store[]) {
     switch (opcode) {
         case Opcode::PUSH: {
             lineStream >> arg;
-            store[1] = static_cast<char>(arg);
+            int numericArg = std::stoi(arg);
+            store[1] = numericArg;
             break;
         }
         case Opcode::PRINT_ASCII: {
             lineStream >> arg;
-            store[1] = static_cast<char>(arg);
+            int numericArg = std::stoi(arg);
+            store[1] = numericArg;
             break;   
         }
         default: {

@@ -11,8 +11,8 @@
 
 class Compiler {
 public:
-    //Compiles the entire stringstream and pushes the opcode generated to the bytecode recipient
-    void compile(std::stringstream& code, std::int8_t bytecodeRecipient[]);
+    // Compiles the entire stringstream and pushes the opcode generated to the bytecode recipient
+    void compile(std::stringstream& code, std::int8_t* bytecodeRecipient);
 
 private:
     void compileLine(const std::string& line, std::int8_t store[]);
