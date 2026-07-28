@@ -5,12 +5,12 @@ PROJECT := RenanLang
 
 # Compile config
 CC := g++
-SRC := $(wildcard src/*.cpp)
+SRC := $(wildcard src/*.cpp src/**/*.cpp)
 INCLUDE := include
 TARGET := build/RenanLang
 
 MODE := debug
-FLAGS := -O0 -g -Wall -Wextra -Wpedantic 
+FLAGS := -O0 -g -Wall -Wextra -Wpedantic -DDEBUG 
 
 # Colors
 NO_COLOR := \033[0m

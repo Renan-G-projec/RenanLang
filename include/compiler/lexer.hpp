@@ -4,11 +4,14 @@
 
 #include <string>
 #include <vector>
+#include <sstream>
+#include <iostream>
 
 enum Token {
     KEYWORD,
     LABEL,
-    LITERAL
+    LITERAL,
+    SEPARATOR
 };
 
 class Lexer {
