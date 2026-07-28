@@ -1,5 +1,5 @@
 // Ad Maiorem Dei Gloriam!
-#include "compiler.hpp"
+#include "compiler/compiler.hpp"
 #include <iostream>
 
 #include "opcodeTable.hpp"

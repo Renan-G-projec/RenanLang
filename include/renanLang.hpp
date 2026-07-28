@@ -3,7 +3,7 @@
 #define RENANLANG_HPP
 
 #include "fileLoader.hpp"
-#include "compiler.hpp"
+#include "compiler/compiler.hpp"
 #include "virtualMachine.hpp"
 
 class RenanLang {
