@@ -110,6 +110,26 @@ void VirtualMachine::_execute() {
             mCurrentAddress = address;
             break;
         }
+        case Opcode::JMP_IF_ZERO: {
+            if (mStack.size() < 5) {
+                std::cout << "Error: At line " << mCurrentAddress << '\n' << "Opcode JMP_IF_ZERO: Stack underflow.";
+                mRunning = false;
+                break;
+            }
+
+            bool shallJump = popStack() == 0;
+            if (shallJump) {
+                std::uint32_t address = 0;
+                for (std::int8_t i = 3; i >= 0; --i) {
+                    std::uint8_t byteOffset = isBigEndian() ? 8 * i : 8 * (3 - i);
+                    address |= static_cast<std::uint8_t>(popStack()) << byteOffset;
+                }
+                mCurrentAddress = address;
+            } else {
+                for (char i = 0; i < 4; ++i) mStack.pop();
+            }
+            break;
+        }
         case Opcode::HALT: {
             mRunning = false;
             break;
