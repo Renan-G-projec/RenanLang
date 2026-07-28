@@ -16,6 +16,8 @@ public:
 
 private:
     void compileLine(const std::string& line, std::int8_t store[]);
+
+    static bool isComment(const std::string& line);
 };
 
 #endif

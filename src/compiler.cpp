@@ -22,6 +22,8 @@ void Compiler::compile(std::stringstream &code, int8_t* bytecodeRecipient) {
 
     while (std::getline(code, currentLineCode)) {
         std::int8_t bytecode[2];
+        if (isComment(currentLineCode)) continue;
+        
         compileLine(currentLineCode, bytecode);
         bytecodeRecipient[currentByte] = bytecode[0];
         bytecodeRecipient[currentByte + 1] = bytecode[1];
@@ -63,4 +65,8 @@ void Compiler::compileLine(const std::string& code, std::int8_t store[]) {
             break;
         }
     }
+}
+
+bool Compiler::isComment(const std::string& line) {
+    return line.find("//") != std::string::npos;
 }

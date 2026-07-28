@@ -1,6 +1,8 @@
+// This is a comment...
 PUSH 11 
 PUSH 11
 ADD
 PRINT
+// Another one...
 PRINT
 HALT
