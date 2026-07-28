@@ -2,6 +2,16 @@
 #include "virtualMachine.hpp"
 #include "opcodeTable.hpp"
 
+// Helper function for jump instructions
+bool isBigEndian() {
+    union {
+        std::uint32_t i;
+        std::uint8_t c[4];
+    } bigendianInt = {0x01020304};
+    return bigendianInt.c[0] == 1;
+}
+
+
 void VirtualMachine::loadBytecode(std::int8_t* bytecode) {
     this->mCode = bytecode;
 }
@@ -79,6 +89,25 @@ void VirtualMachine::_execute() {
             int arg2 = popStack();
 
             mStack.push(arg1 - arg2);
+            break;
+        }
+        case Opcode::JMP: {
+            if (mStack.size() < 4) {
+                std::cout << "Error: At line " << mCurrentAddress << '\n' << "Opcode JMP: Stack underflow.";
+                mRunning = false;
+                break;
+            }
+
+            // Pops the bytes and adds them by relevance
+            // Example: Stack is 0x10 0x11 0x14 0x13
+            // The address will be 0x10 0x11 0x14 0x13
+            // Big endian handled
+            std::uint32_t address = 0;
+            for (std::int8_t i = 3; i >= 0; --i) {
+                std::uint8_t byteOffset = isBigEndian() ? 8 * i : 8 * (3 - i);
+                address |= static_cast<std::uint8_t>(popStack()) << byteOffset;
+            }
+            mCurrentAddress = address;
             break;
         }
         case Opcode::HALT: {
