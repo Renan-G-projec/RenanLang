@@ -68,6 +68,19 @@ void VirtualMachine::_execute() {
             free(string);
             break;
         }
+        case Opcode::SUB: {
+            if (mStack.size() < 2) {
+                std::cout << "Error: At line " << mCurrentAddress << '\n' << "Opcode SUB: Stack underflow.";
+                mRunning = false;
+                break;
+            }
+
+            int arg1 = popStack();
+            int arg2 = popStack();
+
+            mStack.push(arg1 - arg2);
+            break;
+        }
         case Opcode::HALT: {
             mRunning = false;
             break;
