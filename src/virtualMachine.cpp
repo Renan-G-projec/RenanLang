@@ -49,6 +49,25 @@ void VirtualMachine::_execute() {
             std::cout << numberToPrint << '\n';
             break;
         }
+        case Opcode::PRINT_ASCII: {
+            std::uint8_t numChars = mCurrentInstruction[1];
+            if (mStack.size() < numChars) {
+                std::cout << "Error at line " << mCurrentAddress << '\n' << "Opcode PRINT_ASCII: Stack underflow.";
+                mRunning = false;
+                break;
+            }
+
+            char* string = static_cast<char*>(malloc(numChars + 1));
+            for (std::uint8_t i = 0; i < numChars; ++i) {
+                string[i] = popStack();
+            }
+            string[numChars] = '\0';
+
+            std::cout << string;
+
+            free(string);
+            break;
+        }
         case Opcode::HALT: {
             mRunning = false;
             break;

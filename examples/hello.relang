@@ -1,0 +1,8 @@
+// Ad Maiorem Dei Gloriam!
+PUSH 111 // o
+PUSH 108 // l
+PUSH 108 // l
+PUSH 101 // e
+PUSH 104 // h
+PRINT_ASCII 5
+HALT

@@ -68,5 +68,5 @@ void Compiler::compileLine(const std::string& code, std::int8_t store[]) {
 }
 
 bool Compiler::isComment(const std::string& line) {
-    return line.find("//") != std::string::npos;
+    return line.find("//") == 0;
 }
