@@ -50,7 +50,14 @@ void Compiler::compileLine(const std::string& code, std::int8_t store[]) {
     switch (opcode) {
         case Opcode::PUSH: {
             lineStream >> arg;
-            int numericArg = std::stoi(arg);
+            int numericArg;
+
+            // Checks if it is a character with 'a' format or it a integer byte.
+            if (arg.find("'") == 0) {
+                numericArg = static_cast<int>(arg[1]);
+            } else {
+                numericArg = std::stoi(arg);
+            }
             store[1] = numericArg;
             break;
         }
