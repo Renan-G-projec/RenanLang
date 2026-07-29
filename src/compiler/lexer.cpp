@@ -1,12 +1,13 @@
 // Ad Maiorem Dei Gloriam!
 #include "compiler/lexer.hpp"
 
-void Lexer::tokenize(const std::string& rawCode, std::vector<std::pair<Token, std::string>>& tokenContainer) {
+bool Lexer::tokenize(const std::string& rawCode, lexer_output_t& tokenContainer) {
     std::stringstream codeStream{rawCode};
     std::string rawToken;
-    while (codeStream >> rawToken) {
-        std::cout << rawToken << ' ';
-    }
+    
+    scanCode(rawCode);
+    evaluateCode(tokenContainer);
+    return true;
 }
 
 #ifdef DEBUG
