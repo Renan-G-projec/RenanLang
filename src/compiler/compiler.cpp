@@ -23,7 +23,13 @@ void Compiler::compile(std::string &code, int8_t* bytecodeRecipient) {
     scanned_code_t lexedCode;
     bool success = mLexer.tokenize(code, lexedCode);
 
-    mLexer.printLexerOutput(lexedCode);
+    if (!success) {
+        std::cout << "Exiting...\n";
+        exit(-1);
+        return;
+    } else {
+        
+    }
 }
 
 void Compiler::compileLine(const std::string& code, std::int8_t store[]) {

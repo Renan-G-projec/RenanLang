@@ -1,8 +1,8 @@
 // Ad Maiorem Dei Gloriam!
-PUSH 20
-PUSH 30
+PUSH 20;
+PUSH 30;
 // The stack is with 30 at the top and 20 at the bottom
 // The sub instructions subtracts the bottom from the top
-SUB
-PRINT // Result: 10
-HALT
+SUB;
+PRINT; // Result: 10
+HALT;
