@@ -35,48 +35,6 @@ void Compiler::compile(std::string &code, int8_t* bytecodeRecipient) {
     }
 }
 
-void Compiler::compileLine(const std::string& code, std::int8_t store[]) {
-    std::stringstream lineStream{code};
-    std::string verb;
-    std::string arg;
-
-    lineStream >> verb;
-    Opcode opcode = processOpcode(verb);
-    store[0] = static_cast<std::uint8_t>(opcode);
-
-    if (opcode == Opcode::INVALID_OPCODE) {
-        std::cout << "Error: Token " << verb << " does not match any know token. Exiting.\n";
-        exit(-1);
-    }
-
-    // If the opcode needs an argument, it is processed through this switch
-    switch (opcode) {
-        case Opcode::PUSH: {
-            lineStream >> arg;
-            int numericArg;
-
-            // Checks if it is a character with 'a' format or it a integer byte.
-            if (arg.find("'") == 0) {
-                numericArg = static_cast<int>(arg[1]);
-            } else {
-                numericArg = std::stoi(arg);
-            }
-            store[1] = numericArg;
-            break;
-        }
-        case Opcode::PRINT_ASCII: {
-            lineStream >> arg;
-            int numericArg = std::stoi(arg);
-            store[1] = numericArg;
-            break;   
-        }
-        default: {
-            store[1] = 0;
-            break;
-        }
-    }
-}
-
 void Compiler::compileStream(scanned_code_t& scannedCode, std::int8_t store[]) {
     // I passed 2 hours trying to implement this.
 
