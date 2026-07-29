@@ -22,7 +22,8 @@ private:
     Lexer mLexer;
     void compileStream(scanned_code_t& code, std::int8_t store[]);
 
-    static bool isComment(const std::string& line);
+    void expandCode(scanned_code_t& code);
+    void compileCode(scanned_code_t& code, std::int8_t store[]);
 };
 
 #endif

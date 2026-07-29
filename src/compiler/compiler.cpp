@@ -4,6 +4,8 @@
 
 #include "opcodeTable.hpp"
 
+bool isBigEndian();
+
 Opcode processOpcode(const std::string& verb) {
     if (verb == "PUSH") return PUSH;
     if (verb == "ADD") return ADD;
@@ -39,10 +41,68 @@ void Compiler::compileStream(scanned_code_t& scannedCode, std::int8_t store[]) {
     // I passed 2 hours trying to implement this.
 
     // Need to break up into smaller pieces
-    // expandCode();
-    // compileCode();
+    expandCode(scannedCode);
+    //compileCode(scannedCode, store);
 }
 
-bool Compiler::isComment(const std::string& line) {
-    return line.find("//") == 0;
+void Compiler::expandCode(scanned_code_t& code) {
+    std::uint32_t byteoffset = 0;
+    std::unordered_map<std::string, std::uint32_t> mCalltable;
+
+    // We map the byte offset and the tables
+    for (std::int32_t i = 0; i < code.size(); ++i) {
+        std::pair<Token, std::string> token = code[i];
+        if (token.first == KEYWORD) {
+            byteoffset += 2; // Opcode always become bigger
+            auto nextToken = code[i + 1];
+            if (nextToken.first == STRING_LITERAL) byteoffset += nextToken.second.size() * 2; // Expands to push ch for each char on the string.
+            if (nextToken.first == LABEL_IDENTIFIER) byteoffset += 12; // 8 for 4 push instructions, 2 for SET_ADDR and 2 for JMP/JMP_IF_ZERO
+        }
+        if (token.first == LABEL) mCalltable[token.second] = byteoffset;
+    }
+
+    // Then we copy the array and expands it removing the labels
+    scanned_code_t newCode{code};
+    code.clear();
+    
+    std::uint32_t currentIndex = 0;
+
+    while (currentIndex < newCode.size()) {
+        auto rawToken = newCode[currentIndex];
+        if (rawToken.first == KEYWORD && processOpcode(rawToken.second) == PUSH) {
+            auto nextToken = newCode[currentIndex + 1];
+
+            if (nextToken.first == STRING_LITERAL) {
+                for (int i = nextToken.second.size() - 1; i >= 0; --i) {
+                    auto ch = nextToken.second[i];
+                    code.push_back({KEYWORD, "PUSH"});
+                    code.push_back({CHAR_LITERAL, std::string{ch}});
+                    code.push_back({SEPARATOR, ";"});
+                }
+            }
+        } else if (rawToken.first == KEYWORD && (processOpcode(rawToken.second) == JMP || processOpcode(rawToken.second) == JMP_IF_ZERO)) {
+            auto nextToken = newCode[currentIndex + 1];
+            auto labelAddress = mCalltable[nextToken.second];
+
+            std::uint8_t addresses[4];
+
+            for (std::uint8_t i = 0; i < 4; ++i) {
+                auto byteOffset = isBigEndian() ? i * 8 : 8 * (i - 3);
+                addresses[i] = (labelAddress & (0b11111111UL << byteOffset) >> i);
+                code.push_back({KEYWORD, "PUSH"});
+                code.push_back({NUM_LITERAL, std::to_string(addresses[i])});
+                code.push_back({SEPARATOR, ";"});
+            }
+
+            code.push_back({KEYWORD, "SET_ADDR"});
+            code.push_back({KEYWORD, rawToken.second});
+        } else {
+            code.push_back(rawToken);
+        }
+        currentIndex++;
+    }
+
+    for (auto token : code) {
+        std::cout << "TokenType: " << token.first <<  " Token:" << token.second << '\n';
+    }
 }

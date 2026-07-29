@@ -1,0 +1,19 @@
+// Ad Maiorem Dei Gloriam!
+
+start:
+    PUSH "Hello, world!";
+    PRINT_ASCII 13;
+    JMP finish;
+
+middle:
+    PUSH " MIDDLE"
+    PRINT_ASCII 7;
+    JMP realfinish;
+
+finish:
+    PUSH " Finished!";
+    PRINT_ASCII 10;
+    JMP middle;
+
+realfinish:
+    HALT;

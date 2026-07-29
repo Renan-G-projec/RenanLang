@@ -1,5 +1,4 @@
 // Ad Maiorem Dei Gloriam!
-hello:
 PUSH 'o'; // o
 PUSH 'l'; // l
 PUSH 'l'; // l
@@ -7,5 +6,4 @@ PUSH 'e'; // e
 PUSH 'h'; // h
 PRINT_ASCII 5;
 
-JMP hello; 
 HALT;
