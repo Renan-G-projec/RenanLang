@@ -25,7 +25,7 @@ public:
     bool tokenize(const std::string& rawCode, scanned_code_t& tokenContainer);
     const std::string& getError();
 
-    void printLexerOutput(scanned_code_t scannedCode);
+    void printLexerOutput(scanned_code_t& scannedCode);
 
 private:
     scanned_code_t mScannedCode;
@@ -38,8 +38,6 @@ private:
     Token getToken(const std::string& token);
 
     void scanCode(const std::string& code);
-
-
 
     // Helper functions
     bool isWhitespace(char);

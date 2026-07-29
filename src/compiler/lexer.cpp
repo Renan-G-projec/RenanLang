@@ -150,7 +150,7 @@ std::string getTokenTypeName(Token token) {
     }
 }
 
-void Lexer::printLexerOutput(scanned_code_t scannedCode) {
+void Lexer::printLexerOutput(scanned_code_t& scannedCode) {
     for (auto token : scannedCode) std::cout << "Type: " << getTokenTypeName(token.first) << " Value:" << token.second << '\n';
 }
 
