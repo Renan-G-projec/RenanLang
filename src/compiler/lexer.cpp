@@ -39,10 +39,10 @@ void Lexer::scanCode(const std::string& rawCode) {
                         mScannedCode.push_back({Token::KEYWORD, alphanumericContent});
                         break;
                     } else {
-                        mScannedCode.push_back({rawCode[++mCurrentPos] == ':' ? Token::LABEL : Token::LABEL_IDENTIFIER, alphanumericContent});
+                        mScannedCode.push_back({rawCode[mCurrentPos] == ':' ? Token::LABEL : Token::LABEL_IDENTIFIER, alphanumericContent});
                     }
 
-                    if (!isWhitespace(rawCode[mCurrentPos])) {
+                    if (!isWhitespace(rawCode[++mCurrentPos])) {
                         mRunning = false;
                         errorMessage = alphanumericContent + " is not a valid label name.";
                     }
@@ -50,6 +50,7 @@ void Lexer::scanCode(const std::string& rawCode) {
                     std::string numberLiteralContent{currentChar};
                     while (!isWhitespace(rawCode[++mCurrentPos])) {
                         if (!isDigit(rawCode[mCurrentPos])) {
+                            if (rawCode[mCurrentPos] == ';') { mCurrentPos--; break; };
                             mRunning = false;
                         }
                         numberLiteralContent += rawCode[mCurrentPos];
