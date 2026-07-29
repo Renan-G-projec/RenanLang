@@ -37,15 +37,18 @@ void Lexer::scanCode(const std::string& rawCode) {
                     while (isAlphanumeric(rawCode[++mCurrentPos]) || rawCode[mCurrentPos] == '_') alphanumericContent += rawCode[mCurrentPos];
                     if (isKeyword(alphanumericContent)) {
                         mScannedCode.push_back({Token::KEYWORD, alphanumericContent});
+                        if (rawCode[mCurrentPos] == ';') { mCurrentPos--; break; }
                         break;
                     } else {
                         mScannedCode.push_back({rawCode[mCurrentPos] == ':' ? Token::LABEL : Token::LABEL_IDENTIFIER, alphanumericContent});
                     }
 
+                    if (rawCode[mCurrentPos] == ';') { mCurrentPos--; break; }
+
                     if (!isWhitespace(rawCode[++mCurrentPos])) {
                         mRunning = false;
                         errorMessage = alphanumericContent + " is not a valid label name.";
-                    }
+                    }; 
                 } else if (isDigit(currentChar)) {
                     std::string numberLiteralContent{currentChar};
                     while (!isWhitespace(rawCode[++mCurrentPos])) {
