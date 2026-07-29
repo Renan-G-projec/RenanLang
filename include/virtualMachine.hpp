@@ -14,6 +14,7 @@ public:
 private:
     std::int8_t* mCode;
     std::uint32_t mCurrentAddress = 0;
+    std::uint32_t mAddressRegister = 0;
     std::stack<std::int8_t> mStack;
 
     std::int8_t mCurrentInstruction[2];

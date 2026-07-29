@@ -10,6 +10,7 @@ enum Opcode {
     SUB,
     JMP,
     JMP_IF_ZERO,
+    SET_ADDR,
     HALT = 64,
     INVALID_OPCODE
 };
