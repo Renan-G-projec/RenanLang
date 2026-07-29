@@ -34,7 +34,7 @@ void Lexer::scanCode(const std::string& rawCode) {
                 if (isWhitespace(currentChar)) break;
                 if (isAlpha(currentChar)) {
                     std::string alphanumericContent{currentChar};
-                    while (isAlphanumeric(rawCode[++mCurrentPos])) alphanumericContent += rawCode[mCurrentPos];
+                    while (isAlphanumeric(rawCode[++mCurrentPos]) || rawCode[mCurrentPos] == '_') alphanumericContent += rawCode[mCurrentPos];
                     if (isKeyword(alphanumericContent)) {
                         mScannedCode.push_back({Token::KEYWORD, alphanumericContent});
                         break;
@@ -63,6 +63,8 @@ void Lexer::scanCode(const std::string& rawCode) {
                     mCurrentPos--;
                 } else if (currentChar == ';') {
                     mScannedCode.push_back({Token::SEPARATOR, ";"});
+                } else if (currentChar == '/' && rawCode[++mCurrentPos] == '/') {
+                    currentState = COMMENT;
                 }
                 break;
             }
@@ -113,9 +115,10 @@ bool Lexer::isAlphanumeric(char ch) {
 
 bool Lexer::isKeyword(const std::string& token) {
     return
-        token == "PUSH"                 || token == "PRINT"       || token == "PRINT_ASCII" ||
-        token == "JMP"                  || token == "JMP_IF_ZERO" || token == "JMP_LABEL"   ||
-        token == "JMP_IF_ZERO_LABEL"    || token == "HALT";
+        token == "PUSH"                 || token == "PRINT"       || token == "PRINT_ASCII"         ||
+        token == "ADD"                  || token == "SUB"         || token == "JMP"                 || 
+        token == "JMP_IF_ZERO"          || token == "JMP_LABEL"   || token == "JMP_IF_ZERO_LABEL"   || 
+        token == "HALT";
 }
 
 const std::string& Lexer::getError() { 

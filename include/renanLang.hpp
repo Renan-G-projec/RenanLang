@@ -19,7 +19,7 @@ private:
     FileLoader mFileloader;
     Compiler mCompiler;
     
-    std::stringstream mLoadedCode;
+    std::string mLoadedCode;
     std::int8_t mCompiledCode[100];
 };
 

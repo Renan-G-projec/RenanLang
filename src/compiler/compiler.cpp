@@ -16,20 +16,14 @@ Opcode processOpcode(const std::string& verb) {
     return INVALID_OPCODE;
 }
 
-void Compiler::compile(std::stringstream &code, int8_t* bytecodeRecipient) {
+void Compiler::compile(std::string &code, int8_t* bytecodeRecipient) {
     std::uint32_t currentByte = 0;
     std::string currentLineCode;
 
-    while (std::getline(code, currentLineCode)) {
-        std::int8_t bytecode[2];
-        if (isComment(currentLineCode)) continue;
-        
-        compileLine(currentLineCode, bytecode);
-        bytecodeRecipient[currentByte] = bytecode[0];
-        bytecodeRecipient[currentByte + 1] = bytecode[1];
+    scanned_code_t lexedCode;
+    bool success = mLexer.tokenize(code, lexedCode);
 
-        currentByte += 2;
-    }
+    mLexer.printLexerOutput(lexedCode);
 }
 
 void Compiler::compileLine(const std::string& code, std::int8_t store[]) {

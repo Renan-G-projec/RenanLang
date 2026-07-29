@@ -8,7 +8,7 @@
 
 class FileLoader {
 public:
-    void load(const std::string& filename, std::stringstream& target) const;
+    void load(const std::string& filename, std::string& target) const;
 };
 
 #endif
