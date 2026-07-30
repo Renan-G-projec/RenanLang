@@ -38,11 +38,11 @@ void Compiler::compile(std::string &code, int8_t* bytecodeRecipient) {
 }
 
 void Compiler::compileStream(scanned_code_t& scannedCode, std::int8_t store[]) {
-    // I passed 2 hours trying to implement this.
+    // I passed +2 hours trying to implement this.
 
     // Need to break up into smaller pieces
     expandCode(scannedCode);
-    //compileCode(scannedCode, store);
+    compileCode(scannedCode, store);
 }
 
 void Compiler::expandCode(scanned_code_t& code) {
@@ -64,6 +64,10 @@ void Compiler::expandCode(scanned_code_t& code) {
     // Then we copy the array and expands it removing the labels
     scanned_code_t newCode{code};
     code.clear();
+
+    for (auto label : mCalltable) {
+        std::cout << "LABEL: " << label.first << "ADDRESS: " << label.second << '\n';
+    };
     
     std::uint32_t currentIndex = 0;
 
@@ -78,7 +82,10 @@ void Compiler::expandCode(scanned_code_t& code) {
                     code.push_back({KEYWORD, "PUSH"});
                     code.push_back({CHAR_LITERAL, std::string{ch}});
                     code.push_back({SEPARATOR, ";"});
-                }
+                };
+                currentIndex++;
+            } else {
+                code.push_back(rawToken);
             }
         } else if (rawToken.first == KEYWORD && (processOpcode(rawToken.second) == JMP || processOpcode(rawToken.second) == JMP_IF_ZERO)) {
             auto nextToken = newCode[currentIndex + 1];
@@ -102,7 +109,26 @@ void Compiler::expandCode(scanned_code_t& code) {
         currentIndex++;
     }
 
-    for (auto token : code) {
-        std::cout << "TokenType: " << token.first <<  " Token:" << token.second << '\n';
-    }
 }
+
+void Compiler::compileCode(const scanned_code_t& code, std::int8_t store[]) {
+    std::uint32_t bytecodeIndex = 0;
+
+    for (std::uint32_t i = 0; i < code.size(); ++i) {
+        auto token = code[i];
+        if (token.first == KEYWORD) {
+            auto opcode = processOpcode(token.second);
+            store[bytecodeIndex++] = opcode;
+
+            std::uint8_t arg = 0;
+            if (opcode == PUSH) {
+                if (code[i + 1].first == CHAR_LITERAL) arg = code[i + 1].second[0];
+                if (code[i + 1].first == NUM_LITERAL) arg = std::stoi(code[i + 1].second);
+            } else if (opcode == PRINT_ASCII) {
+                if (code[i + 1].first == CHAR_LITERAL) arg = code[i + 1].second[0];
+                if (code[i + 1].first == NUM_LITERAL) arg = std::stoi(code[i + 1].second);
+            }
+            store[bytecodeIndex++] = arg;
+        }
+    }
+};
