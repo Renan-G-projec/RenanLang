@@ -108,9 +108,12 @@ void VirtualMachine::_execute() {
         }
         case Opcode::SET_ADDR: {
             mAddressRegister = 0;
-            for (std::int8_t i = 3; i >= 0; --i) {
-                std::uint8_t byteOffset = isBigEndian() ? 8 * i : 8 * (3 - i);
-                this->mAddressRegister |= static_cast<std::uint8_t>(popStack()) << byteOffset;
+
+            for (int i = 0; i < 4; i++) {
+                auto byteoffset = (3 - i) * 8;
+                std::uint8_t byte = popStack();
+
+                mAddressRegister |= byte << byteoffset;
             }
             break;
         }

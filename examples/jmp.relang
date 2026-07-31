@@ -11,8 +11,8 @@ middle:
     JMP realfinish;
 
 finish:
-    PUSH " Finished!";
-    PRINT_ASCII 10;
+    PUSH " Finished";
+    PRINT_ASCII 9;
     JMP middle;
 
 realfinish:

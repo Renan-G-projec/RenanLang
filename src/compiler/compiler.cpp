@@ -55,8 +55,8 @@ void Compiler::expandCode(scanned_code_t& code) {
         if (token.first == KEYWORD) {
             byteoffset += 2; // Opcode always become bigger
             auto nextToken = code[i + 1];
-            if (nextToken.first == STRING_LITERAL) byteoffset += nextToken.second.size() * 2; // Expands to push ch for each char on the string.
-            if (nextToken.first == LABEL_IDENTIFIER) byteoffset += 12; // 8 for 4 push instructions, 2 for SET_ADDR and 2 for JMP/JMP_IF_ZERO
+            if (nextToken.first == STRING_LITERAL) byteoffset += nextToken.second.size() * 2 - 2; // Expands to push ch for each char on the string.
+            if (nextToken.first == LABEL_IDENTIFIER) byteoffset += 10; // 8 for 4 push instructions, 2 for SET_ADDR and 2 for JMP/JMP_IF_ZERO
         }
         if (token.first == LABEL) mCalltable[token.second] = byteoffset;
     }
@@ -65,10 +65,6 @@ void Compiler::expandCode(scanned_code_t& code) {
     scanned_code_t newCode{code};
     code.clear();
 
-    for (auto label : mCalltable) {
-        std::cout << "LABEL: " << label.first << "ADDRESS: " << label.second << '\n';
-    };
-    
     std::uint32_t currentIndex = 0;
 
     while (currentIndex < newCode.size()) {
@@ -92,10 +88,13 @@ void Compiler::expandCode(scanned_code_t& code) {
             auto labelAddress = mCalltable[nextToken.second];
 
             std::uint8_t addresses[4];
+            
+            addresses[0] = labelAddress & 0xff;
+            addresses[1] = (labelAddress >> 8) & 0xff;
+            addresses[2] = (labelAddress >> 16) & 0xff;
+            addresses[3] = (labelAddress >> 24) & 0xff;
 
             for (std::uint8_t i = 0; i < 4; ++i) {
-                auto byteOffset = isBigEndian() ? i * 8 : 8 * (i - 3);
-                addresses[i] = (labelAddress & (0b11111111UL << byteOffset) >> i);
                 code.push_back({KEYWORD, "PUSH"});
                 code.push_back({NUM_LITERAL, std::to_string(addresses[i])});
                 code.push_back({SEPARATOR, ";"});
