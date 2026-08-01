@@ -48,6 +48,7 @@ void Compiler::compileStream(scanned_code_t& scannedCode, std::vector<std::int8_
 void Compiler::expandCode(scanned_code_t& code) {
     std::uint32_t byteoffset = 0;
     std::unordered_map<std::string, std::uint32_t> mCalltable;
+    std::vector<std::string> mLabelsCalled; // Used for checking undefined labels
 
     // We map the byte offset and the tables
     for (std::int32_t i = 0; i < code.size(); ++i) {
@@ -56,10 +57,24 @@ void Compiler::expandCode(scanned_code_t& code) {
             byteoffset += 2; // Opcode always become bigger
             auto nextToken = code[i + 1];
             if (nextToken.first == STRING_LITERAL) byteoffset += nextToken.second.size() * 2 - 2; // Expands to push ch for each char on the string.
-            if (nextToken.first == LABEL_IDENTIFIER) byteoffset += 10; // 8 for 4 push instructions, 2 for SET_ADDR and 2 for JMP/JMP_IF_ZERO
+            if (nextToken.first == LABEL_IDENTIFIER) {
+                byteoffset += 10; // 8 for 4 push instructions, 2 for SET_ADDR
+                mLabelsCalled.push_back(nextToken.second);
+            }
         }
         if (token.first == LABEL) mCalltable[token.second] = byteoffset;
     }
+
+    // Checks if some label identifier is not on the map
+    for (auto label : mLabelsCalled) {
+        auto find = mCalltable.find(label) != mCalltable.end();
+        if (!find) {
+            std::cout << "Error: Could not find label " << label << " on the code.\n";
+            std::cout << "Exiting...\n";
+            exit(0);
+        }
+    }
+
 
     // Then we copy the array and expands it removing the labels
     scanned_code_t newCode{code};

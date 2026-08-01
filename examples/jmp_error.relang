@@ -1,0 +1,6 @@
+// Ad Maiorem Dei Gloriam!
+start:
+    PUSH 10;
+    PRINT;
+    JMP hey; // Shall give the error that hey does not exists.
+    HALT;
