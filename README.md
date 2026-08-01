@@ -1,7 +1,7 @@
 # RenanLang
 
 A stack-based assembly-like language, made by a teen for *Hack Club* with love.
-[Screenshor](assets/screenshot.png)
+![Screenshot](assets/screenshot.png)
 
 ## Architecture
 **Relang** is a bytecode compiled language, what means that the raw text file is compiled to 2-bytes long binary instructions which are then interpreted by a *virtual machine*. It is stack based, which means all data is pushed and pop through the stack and the operations are done only on that.
