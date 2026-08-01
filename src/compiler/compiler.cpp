@@ -19,7 +19,7 @@ Opcode processOpcode(const std::string& verb) {
     return INVALID_OPCODE;
 }
 
-void Compiler::compile(std::string &code, int8_t* bytecodeRecipient) {
+void Compiler::compile(std::string &code, std::vector<std::int8_t>& bytecodeRecipient) {
     std::uint32_t currentByte = 0;
     std::string currentLineCode;
 
@@ -37,7 +37,7 @@ void Compiler::compile(std::string &code, int8_t* bytecodeRecipient) {
     }
 }
 
-void Compiler::compileStream(scanned_code_t& scannedCode, std::int8_t store[]) {
+void Compiler::compileStream(scanned_code_t& scannedCode, std::vector<std::int8_t>& store) {
     // I passed +2 hours trying to implement this.
 
     // Need to break up into smaller pieces
@@ -110,14 +110,14 @@ void Compiler::expandCode(scanned_code_t& code) {
 
 }
 
-void Compiler::compileCode(const scanned_code_t& code, std::int8_t store[]) {
+void Compiler::compileCode(const scanned_code_t& code, std::vector<std::int8_t>& store) {
     std::uint32_t bytecodeIndex = 0;
 
     for (std::uint32_t i = 0; i < code.size(); ++i) {
         auto token = code[i];
         if (token.first == KEYWORD) {
             auto opcode = processOpcode(token.second);
-            store[bytecodeIndex++] = opcode;
+            store.push_back(opcode);
 
             std::uint8_t arg = 0;
             if (opcode == PUSH) {
@@ -127,7 +127,7 @@ void Compiler::compileCode(const scanned_code_t& code, std::int8_t store[]) {
                 if (code[i + 1].first == CHAR_LITERAL) arg = code[i + 1].second[0];
                 if (code[i + 1].first == NUM_LITERAL) arg = std::stoi(code[i + 1].second);
             }
-            store[bytecodeIndex++] = arg;
+            store.push_back(arg);
         }
     }
 };

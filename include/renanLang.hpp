@@ -20,7 +20,7 @@ private:
     Compiler mCompiler;
     
     std::string mLoadedCode;
-    std::int8_t mCompiledCode[100];
+    std::vector<std::int8_t> mCompiledCode;
 };
 
 #endif

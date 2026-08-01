@@ -12,7 +12,7 @@ bool isBigEndian() {
 }
 
 
-void VirtualMachine::loadBytecode(std::int8_t* bytecode) {
+void VirtualMachine::loadBytecode(std::vector<std::int8_t> bytecode) {
     this->mCode = bytecode;
 }
 

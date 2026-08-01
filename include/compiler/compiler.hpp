@@ -16,14 +16,14 @@
 class Compiler {
 public:
     // Compiles the entire stringstream and pushes the opcode generated to the bytecode recipient
-    void compile(std::string& code, std::int8_t* bytecodeRecipient);
+    void compile(std::string& code, std::vector<std::int8_t>& bytecodeRecipient);
     
 private:
     Lexer mLexer;
-    void compileStream(scanned_code_t& code, std::int8_t store[]);
+    void compileStream(scanned_code_t& code, std::vector<std::int8_t>& store);
 
     void expandCode(scanned_code_t& code);
-    void compileCode(const scanned_code_t& code, std::int8_t store[]);
+    void compileCode(const scanned_code_t& code, std::vector<std::int8_t>& store);
 };
 
 #endif

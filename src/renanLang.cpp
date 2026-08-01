@@ -9,6 +9,7 @@ void RenanLang::loadFile(const char *fileName) {
 
 void RenanLang::init() {
     mVM.loadBytecode(mCompiledCode);
+    mCompiledCode.clear();
     mVM.init();
     return;
 }
