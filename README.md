@@ -39,3 +39,8 @@ You can see a demo video on https://stardance.hackclub.com/projects/40179
 
 ## AI usage declaration
 I only used AI to the initial idea, decisions like use try-catch or if statements and label mapping. Zero lines of code were written by it.
+
+## OBSERVATIONS
+The integers allowed by push are only 1 byte. Exceding 127 will cause an underflow to happen.
+Char literals become integers at compile time.
+String literals (Always surrounded by "this") expand to a long sequence of pushing char literals (In reverse to print after!) 
